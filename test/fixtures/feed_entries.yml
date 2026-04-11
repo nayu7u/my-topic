@@ -1,0 +1,15 @@
+rails_entry_one:
+  feed_source: this_week_in_rails
+  title: "This Week in Rails #1"
+  url: "https://world.hey.com/this.week.in.rails/entry-1"
+  summary: "Summary of entry 1"
+  published_at: <%= 1.day.ago %>
+  entry_id: "entry-1"
+
+ruby_weekly_entry_one:
+  feed_source: ruby_weekly
+  title: "Ruby Weekly #1"
+  url: "https://rubyweekly.com/issues/1"
+  summary: "Summary of Ruby Weekly #1"
+  published_at: <%= 2.days.ago %>
+  entry_id: "rw-entry-1"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Ruby Weekly</title>
+    <link>https://rubyweekly.com</link>
+    <description>A free, once-weekly e-mail round-up of Ruby news and articles.</description>
+    <item>
+      <title>Ruby Weekly Issue 100</title>
+      <link>https://rubyweekly.com/issues/100</link>
+      <guid>rw-100</guid>
+      <description>Ruby news and articles for this week.</description>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Ruby Weekly Issue 99</title>
+      <link>https://rubyweekly.com/issues/99</link>
+      <guid>rw-99</guid>
+      <description>More Ruby news and articles.</description>
+      <pubDate>Mon, 08 Jan 2024 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>
