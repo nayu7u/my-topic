@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_11_040605) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_041921) do
   create_table "feed_entries", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "entry_id"
+    t.string "entry_id", null: false
     t.integer "feed_source_id", null: false
     t.datetime "published_at"
     t.text "summary"
-    t.string "title"
+    t.string "title", null: false
     t.datetime "updated_at", null: false
-    t.string "url"
+    t.string "url", null: false
     t.index ["feed_source_id", "entry_id"], name: "index_feed_entries_on_feed_source_id_and_entry_id", unique: true
     t.index ["feed_source_id"], name: "index_feed_entries_on_feed_source_id"
   end
@@ -27,9 +27,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_11_040605) do
   create_table "feed_sources", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "fetched_at"
-    t.string "name"
+    t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.string "url"
+    t.string "url", null: false
     t.index ["url"], name: "index_feed_sources_on_url", unique: true
   end
 

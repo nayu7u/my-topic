@@ -8,14 +8,14 @@ class FeedSourceTest < ActiveSupport::TestCase
   test "name と url が必須であること" do
     source = FeedSource.new
     assert_not source.valid?
-    assert_includes source.errors[:name], "can't be blank"
-    assert_includes source.errors[:url], "can't be blank"
+    assert_includes source.errors.details[:name], { error: :blank }
+    assert_includes source.errors.details[:url], { error: :blank }
   end
 
   test "url が一意であること" do
     source = FeedSource.new(name: "Duplicate", url: feed_sources(:this_week_in_rails).url)
     assert_not source.valid?
-    assert_includes source.errors[:url], "has already been taken"
+    assert_includes source.errors.details[:url], { error: :taken, value: feed_sources(:this_week_in_rails).url }
   end
 
   test "有効なデータで保存できること" do

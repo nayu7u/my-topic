@@ -1,25 +1,45 @@
+require "net/http"
+require "uri"
+
 class FeedSource < ApplicationRecord
   has_many :feed_entries, dependent: :destroy
 
   validates :name, presence: true
-  validates :url, presence: true, uniqueness: true
+  validates :url, presence: true, uniqueness: true,
+                  format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }
 
   def fetch!
-    response = Net::HTTP.get(URI(url))
+    uri = URI(url)
+    response = Net::HTTP.start(
+      uri.host,
+      uri.port,
+      use_ssl: uri.scheme == "https",
+      open_timeout: 5,
+      read_timeout: 10
+    ) do |http|
+      http.request(Net::HTTP::Get.new(uri.request_uri)).body
+    end
     feed = Feedjira.parse(response)
     feed.entries.each do |entry|
-      feed_entries.find_or_initialize_by(entry_id: entry.entry_id).tap do |e|
-        e.title = entry.title
-        e.url = entry.url
-        e.summary = entry.summary
-        e.published_at = entry.published
-        e.save!
+      attributes = {
+        title: entry.title,
+        url: entry.url,
+        summary: entry.summary,
+        published_at: entry.published
+      }
+      begin
+        feed_entries.find_or_initialize_by(entry_id: entry.entry_id).tap do |e|
+          e.assign_attributes(attributes)
+          e.save!
+        end
+      rescue ActiveRecord::RecordNotUnique
+        feed_entries.find_by!(entry_id: entry.entry_id).update!(attributes)
       end
     end
     update!(fetched_at: Time.current)
   end
 
   def self.fetch_all!
-    all.each(&:fetch!)
+    find_each(&:fetch!)
   end
 end

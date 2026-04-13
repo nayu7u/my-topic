@@ -23,8 +23,12 @@
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1 min-w-0">
               <h2 class="text-lg font-semibold text-gray-900 truncate">
-                <%= link_to entry.title, entry.url, target: "_blank", rel: "noopener noreferrer",
-                      class: "hover:text-blue-600" %>
+                <% if entry.url.to_s.match?(/\Ahttps?:\/\//i) %>
+                  <%= link_to entry.title, entry.url, target: "_blank", rel: "noopener noreferrer",
+                        class: "hover:text-blue-600" %>
+                <% else %>
+                  <span><%= entry.title %></span>
+                <% end %>
               </h2>
               <% if entry.summary.present? %>
                 <p class="mt-1 text-sm text-gray-600 line-clamp-2"><%= strip_tags(entry.summary) %></p>

@@ -4,10 +4,10 @@ class FeedEntryTest < ActiveSupport::TestCase
   test "feed_source, entry_id, title, url が必須であること" do
     entry = FeedEntry.new
     assert_not entry.valid?
-    assert_includes entry.errors[:feed_source], "must exist"
-    assert_includes entry.errors[:entry_id], "can't be blank"
-    assert_includes entry.errors[:title], "can't be blank"
-    assert_includes entry.errors[:url], "can't be blank"
+    assert_includes entry.errors.details[:feed_source], { error: :blank }
+    assert_includes entry.errors.details[:entry_id], { error: :blank }
+    assert_includes entry.errors.details[:title], { error: :blank }
+    assert_includes entry.errors.details[:url], { error: :blank }
   end
 
   test "同じ feed_source 内で entry_id が一意であること" do
@@ -19,7 +19,7 @@ class FeedEntryTest < ActiveSupport::TestCase
       url: "https://example.com/dup"
     )
     assert_not duplicate.valid?
-    assert_includes duplicate.errors[:entry_id], "has already been taken"
+    assert_includes duplicate.errors.details[:entry_id], { error: :taken, value: existing.entry_id }
   end
 
   test "異なる feed_source では同じ entry_id を持てること" do
