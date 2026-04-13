@@ -1,0 +1,9 @@
+this_week_in_rails:
+  name: "This Week in Rails"
+  url: "https://world.hey.com/this.week.in.rails/feed.atom"
+  fetched_at: <%= 1.hour.ago %>
+
+ruby_weekly:
+  name: "Ruby Weekly"
+  url: "https://cprss.s3.amazonaws.com/rubyweekly.com.xml"
+  fetched_at: ~
