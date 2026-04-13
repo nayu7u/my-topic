@@ -80,6 +80,15 @@ class FeedSourceTest < ActiveSupport::TestCase
     end
   end
 
+  test "fetch! は HTTP エラー時に例外を発生させること" do
+    source = feed_sources(:ruby_weekly)
+    assert_nil source.fetched_at
+    stub_request(:get, source.url).to_return(status: 503)
+
+    assert_raises(RuntimeError) { source.fetch! }
+    assert_nil source.reload.fetched_at
+  end
+
   test "FeedSource.fetch_all! は全フィードソースに対して fetch! を呼ぶこと" do
     FeedSource.all.each do |source|
       stub_request(:get, source.url).to_return(body: ATOM_FEED_XML, status: 200)

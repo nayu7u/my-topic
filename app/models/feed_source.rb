@@ -17,9 +17,14 @@ class FeedSource < ApplicationRecord
       open_timeout: 5,
       read_timeout: 10
     ) do |http|
-      http.request(Net::HTTP::Get.new(uri.request_uri)).body
+      http.request(Net::HTTP::Get.new(uri.request_uri))
     end
-    feed = Feedjira.parse(response)
+
+    unless response.is_a?(Net::HTTPSuccess)
+      raise "Failed to fetch feed: HTTP #{response.code} #{response.message}"
+    end
+
+    feed = Feedjira.parse(response.body)
     feed.entries.each do |entry|
       attributes = {
         title: entry.title,
